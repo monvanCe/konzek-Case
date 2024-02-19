@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-function App() {
+import { fetchContinents } from './redux/continents/continentsSlice';
+import { fetchCountries } from './redux/countries/countriesSlice';
+import { fetchLanguages } from './redux/languages/languagesSlice';
+import { ButtonGroup } from './components/ButtonGroup';
+import { CombineStatesHoc } from './HOCs/CombineStatesHoc';
+
+const App: React.FC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContinents());
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen v-screen select-none">
+      <div className="pb-16 p-2">
+        <CombineStatesHoc />
+      </div>
+      <div className="fixed h-16 w-full bottom-0">
+        <ButtonGroup
+          onClick={() => dispatch(fetchCountries())}
+          onClick2={() => dispatch(fetchLanguages())}
+        />
+      </div>
     </div>
   );
-}
+};
 
 export default App;
