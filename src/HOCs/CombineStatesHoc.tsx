@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StateComponent } from '../components/StateComponent';
 import { StatusObjects } from './types';
 
 export const CombineStatesHoc: React.FC = () => {
   const sortedStateNames = ['continents', 'countries', 'languages'];
-  const [stateStatus, setStateStatus] = useState<StatusObjects | undefined>();
+  const [stateStatus, setStateStatus] = useState<StatusObjects>({
+    continents: {},
+    countries: {},
+    languages: {},
+  });
 
   return (
     <div className="flex">

@@ -3,14 +3,14 @@ import { StatusObjects } from '../HOCs/types';
 
 export interface StateComponentProps {
   stateName: string;
-  stateStatus: StatusObjects | undefined;
-  setStateStatus: Dispatch<SetStateAction<StatusObjects | undefined>>;
+  stateStatus: StatusObjects;
+  setStateStatus: Dispatch<SetStateAction<StatusObjects>>;
 }
 
 export interface SearchInputProps {
   stateName: string;
-  stateStatus: StatusObjects | undefined;
-  setStateStatus: Dispatch<SetStateAction<StatusObjects | undefined>>;
+  stateStatus: StatusObjects;
+  setStateStatus: Dispatch<SetStateAction<StatusObjects>>;
 }
 
 export interface ButtonGroupProps {

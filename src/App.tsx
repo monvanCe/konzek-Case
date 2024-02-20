@@ -15,11 +15,11 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-screen v-screen select-none">
+    <div className="h-screen v-screen select-none max-w-4xl m-auto">
       <div className="pb-16 p-2">
         <CombineStatesHoc />
       </div>
-      <div className="fixed h-16 w-full bottom-0">
+      <div className="fixed h-16 w-full bottom-0 max-w-4xl">
         <ButtonGroup
           onClick={() => dispatch(fetchCountries())}
           onClick2={() => dispatch(fetchLanguages())}

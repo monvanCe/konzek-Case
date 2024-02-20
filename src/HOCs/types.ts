@@ -6,8 +6,8 @@ interface StatueObject {
 }
 
 export interface StatusObjects {
-  continents?: StatueObject;
-  countries?: StatueObject;
-  languages?: StatueObject;
-  [key: string]: StatueObject | undefined;
+  continents: StatueObject;
+  countries: StatueObject;
+  languages: StatueObject;
+  [key: string]: StatueObject;
 }
