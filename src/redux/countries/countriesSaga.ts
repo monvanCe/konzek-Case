@@ -7,8 +7,10 @@ export function* fetchCountriesSaga() {
   try {
     const countries: Country[] = yield call(fetchCountriesAPI);
     yield put(fetchCountriesSuccess(countries));
-  } catch (error: any) {
-    yield put(fetchCountriesFailure(error.message));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      yield put(fetchCountriesFailure(error.message));
+    }
   }
 }
 

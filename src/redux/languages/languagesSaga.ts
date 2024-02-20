@@ -7,8 +7,10 @@ export function* fetchLanguagesSaga() {
   try {
     const languages: Language[] = yield call(fetchLanguagesAPI);
     yield put(fetchLanguagesSuccess(languages));
-  } catch (error: any) {
-    yield put(fetchLanguagesFailure(error.message));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      yield put(fetchLanguagesFailure(error.message));
+    }
   }
 }
 

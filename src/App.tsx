@@ -12,11 +12,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchContinents());
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div className="h-screen v-screen select-none max-w-4xl m-auto">
-      <div className="pb-16 p-2">
+    <div className="select-none max-w-4xl m-auto shadow-lg">
+      <div className="pb-16 p-2 px-10">
         <CombineStatesHoc />
       </div>
       <div className="fixed h-16 w-full bottom-0 max-w-4xl">

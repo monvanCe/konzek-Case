@@ -10,8 +10,8 @@ export function* fetchContinentsSaga() {
   try {
     const continents: Continent[] = yield call(fetchContinentsAPI);
     yield put(fetchContinentsSuccess(continents));
-  } catch (error: any) {
-    if (error) {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
       yield put(fetchContinentsFailure(error.message));
     }
   }

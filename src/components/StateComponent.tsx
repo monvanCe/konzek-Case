@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import {
+  CombineStates,
   ContinentsState,
   CountriesState,
   LanguagesState,
@@ -9,43 +10,31 @@ import { useSelector } from 'react-redux';
 import { StateComponentProps } from './types';
 import { StatusObjects } from '../HOCs/types';
 import ErrorComponent from './ErrorComponent';
+import { filterFuncstion } from '../utils/filterFunction';
+import { tenthSelector } from '../utils/tenthSelector';
 
 export const StateComponent: React.FC<StateComponentProps> = ({
   stateName,
   stateStatus,
   setStateStatus,
 }) => {
-  const state = useSelector((states: any) => states[stateName]) as
+  const state = useSelector((states: CombineStates) => states[stateName]) as
     | ContinentsState
     | CountriesState
     | LanguagesState;
+  const states = useSelector((states) => states) as {
+    continents: ContinentsState;
+    countries: CountriesState;
+    languages: LanguagesState;
+  };
 
   const filteredState = useMemo(() => {
-    if (!stateStatus[stateName]?.searchText) {
-      return state.data;
-    }
-    return state.data.filter((item) =>
-      item.name.toLowerCase().includes(stateStatus[stateName]!.searchText!)
-    );
-  }, [stateStatus[stateName]?.searchText]);
+    return filterFuncstion(stateStatus, stateName, state, states);
+  }, [stateStatus[stateName]?.searchText, state, stateStatus]);
 
   useEffect(() => {
-    let lastCode: string | undefined;
-    if (filteredState.length >= 10) {
-      lastCode = filteredState[9].code;
-    } else {
-      lastCode = filteredState[filteredState.length - 1].code;
-    }
-
-    setStateStatus((prev: StatusObjects) => ({
-      ...prev,
-      [stateName]: {
-        ...prev?.[stateName],
-        current: lastCode,
-        previous: prev?.[stateName]?.current,
-      },
-    }));
-  }, [stateStatus[stateName]?.searchText]);
+    tenthSelector(filteredState, setStateStatus, stateName);
+  }, [filteredState.length]);
 
   if (state.loading) {
     return <div>Loading...</div>;
@@ -83,7 +72,7 @@ export const StateComponent: React.FC<StateComponentProps> = ({
   };
 
   return (
-    <div className="pr-2">
+    <div className="pr-2 relative">
       <SearchInput
         stateName={stateName}
         stateStatus={stateStatus}
@@ -91,6 +80,7 @@ export const StateComponent: React.FC<StateComponentProps> = ({
       />
       {filteredState?.map((item) => (
         <div
+          key={item.code}
           className={`h-10 mb-2 px-4 items-center flex shadow-inner rounded-full cursor-pointer hover:shadow-lg ${backgroundColor(
             item.code
           )}`}
