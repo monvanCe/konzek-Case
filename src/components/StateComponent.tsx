@@ -22,11 +22,7 @@ export const StateComponent: React.FC<StateComponentProps> = ({
     | ContinentsState
     | CountriesState
     | LanguagesState;
-  const states = useSelector((states) => states) as {
-    continents: ContinentsState;
-    countries: CountriesState;
-    languages: LanguagesState;
-  };
+  const states = useSelector((states) => states) as CombineStates;
 
   const filteredState = useMemo(() => {
     return filterFuncstion(stateStatus, stateName, state, states);
@@ -59,15 +55,12 @@ export const StateComponent: React.FC<StateComponentProps> = ({
     if (!stateStatus) {
       return 'bg-white';
     }
-
     if (stateStatus[stateName]?.current === code) {
       return 'bg-indigo-300';
     }
-
     if (stateStatus[stateName]?.previous === code) {
       return 'bg-orange-300';
     }
-
     return 'bg-white';
   };
 
