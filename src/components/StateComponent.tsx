@@ -6,12 +6,14 @@ import {
   LanguagesState,
 } from '../redux/types';
 import { SearchInput } from './SearchInput';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StateComponentProps } from './types';
 import { StatusObjects } from '../HOCs/types';
 import ErrorComponent from './ErrorComponent';
 import { filterFuncstion } from '../utils/filterFunction';
 import { tenthSelector } from '../utils/tenthSelector';
+import { fetchCountries } from '../redux/countries/countriesSlice';
+import { fetchLanguages } from '../redux/languages/languagesSlice';
 
 export const StateComponent: React.FC<StateComponentProps> = ({
   stateName,
@@ -23,6 +25,7 @@ export const StateComponent: React.FC<StateComponentProps> = ({
     | CountriesState
     | LanguagesState;
   const states = useSelector((states) => states) as CombineStates;
+  const dispatch = useDispatch();
 
   const filteredState = useMemo(() => {
     return filterFuncstion(stateStatus, stateName, state, states);
@@ -31,6 +34,10 @@ export const StateComponent: React.FC<StateComponentProps> = ({
   useEffect(() => {
     tenthSelector(filteredState, setStateStatus, stateName);
   }, [filteredState.length]);
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   if (state.loading) {
     return <div>Loading...</div>;
@@ -41,6 +48,12 @@ export const StateComponent: React.FC<StateComponentProps> = ({
   }
 
   const handleClick = (code: string) => {
+    if (stateName === 'continents' && !(states.countries.data.length > 0)) {
+      dispatch(fetchCountries());
+    }
+    if (stateName === 'countries' && !(states.languages.data.length > 0)) {
+      dispatch(fetchLanguages());
+    }
     setStateStatus((prev: StatusObjects) => ({
       ...prev,
       [stateName]: {
@@ -76,7 +89,7 @@ export const StateComponent: React.FC<StateComponentProps> = ({
           key={item.code}
           className={`h-10 mb-2 px-4 items-center flex shadow-inner rounded-full cursor-pointer hover:shadow-lg ${backgroundColor(
             item.code
-          )}`}
+          )} border`}
           onClick={() => {
             handleClick(item.code);
           }}

@@ -10,7 +10,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStateStatus((prev: StatusObjects) => ({
       ...prev,
-      [stateName]: { ...prev[stateName], searchText: e.currentTarget.value },
+      [stateName]: { ...prev[stateName], searchText: e.target.value },
     }));
   };
 
